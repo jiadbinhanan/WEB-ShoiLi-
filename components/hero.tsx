@@ -1,134 +1,196 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import { ArrowRight, Code2, Layers, Zap, Terminal, Palette, Database } from "lucide-react"
+import React from "react"
 
+import { useRef, useCallback, useEffect, useState } from "react"
+import {
+  motion,
+  useInView,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion"
+import {
+  ArrowRight,
+  Code2,
+  Layers,
+  Zap,
+  Terminal,
+  Palette,
+  Database,
+  Cpu,
+  Globe,
+  Figma,
+  Braces,
+  FileCode2,
+} from "lucide-react"
+
+/* ─── Syntax-highlighted floating code snippets ─── */
 const codeSnippets = [
   {
-    code: `const design = await\n  createArt({\n    style: "premium",\n    quality: "ultra"\n  });`,
-    top: "8%",
-    left: "3%",
-    rotate: -6,
-    delay: 1.8,
-    size: "text-[10px] md:text-xs",
+    lines: [
+      { tokens: [{ text: "const ", cls: "text-purple-400" }, { text: "design", cls: "text-foreground" }, { text: " = ", cls: "text-purple-400" }, { text: "await", cls: "text-purple-400" }] },
+      { tokens: [{ text: "  createArt", cls: "text-blue-400" }, { text: "(", cls: "text-foreground" }, { text: "{", cls: "text-foreground" }] },
+      { tokens: [{ text: '    style', cls: "text-foreground" }, { text: ': ', cls: "text-foreground" }, { text: '"premium"', cls: "text-green-400" }, { text: ',', cls: "text-foreground" }] },
+      { tokens: [{ text: '    quality', cls: "text-foreground" }, { text: ': ', cls: "text-foreground" }, { text: '"ultra"', cls: "text-green-400" }] },
+      { tokens: [{ text: "  }", cls: "text-foreground" }, { text: ");", cls: "text-foreground" }] },
+    ],
+    top: "6%", left: "2%", rotate: -5, delay: 1.6,
   },
   {
-    code: `interface Pixel {\n  color: HEX;\n  glow: number;\n  depth: float;\n}`,
-    top: "15%",
-    right: "4%",
-    rotate: 4,
-    delay: 2.2,
-    size: "text-[10px] md:text-xs",
+    lines: [
+      { tokens: [{ text: "interface ", cls: "text-purple-400" }, { text: "Pixel", cls: "text-yellow-300" }, { text: " {", cls: "text-foreground" }] },
+      { tokens: [{ text: "  color", cls: "text-foreground" }, { text: ": ", cls: "text-foreground" }, { text: "HEX", cls: "text-yellow-300" }, { text: ";", cls: "text-foreground" }] },
+      { tokens: [{ text: "  glow", cls: "text-foreground" }, { text: ": ", cls: "text-foreground" }, { text: "number", cls: "text-blue-400" }, { text: ";", cls: "text-foreground" }] },
+      { tokens: [{ text: "  depth", cls: "text-foreground" }, { text: ": ", cls: "text-foreground" }, { text: "float", cls: "text-blue-400" }, { text: ";", cls: "text-foreground" }] },
+      { tokens: [{ text: "}", cls: "text-foreground" }] },
+    ],
+    top: "12%", right: "2%", rotate: 4, delay: 2.0,
   },
   {
-    code: `export function\n  render(\n    canvas: GPU\n  ) {\n  // magic here\n}`,
-    bottom: "18%",
-    left: "5%",
-    rotate: 3,
-    delay: 2.6,
-    size: "text-[10px] md:text-xs",
+    lines: [
+      { tokens: [{ text: "export ", cls: "text-purple-400" }, { text: "async ", cls: "text-purple-400" }, { text: "function", cls: "text-purple-400" }] },
+      { tokens: [{ text: "  render", cls: "text-blue-400" }, { text: "(", cls: "text-foreground" }, { text: "canvas", cls: "text-foreground" }, { text: ": ", cls: "text-foreground" }, { text: "GPU", cls: "text-yellow-300" }, { text: ")", cls: "text-foreground" }] },
+      { tokens: [{ text: "{", cls: "text-foreground" }] },
+      { tokens: [{ text: "  ", cls: "" }, { text: "// magic happens", cls: "text-muted-foreground/60" }] },
+      { tokens: [{ text: "  ", cls: "" }, { text: "return ", cls: "text-purple-400" }, { text: "pixels", cls: "text-foreground" }, { text: ";", cls: "text-foreground" }] },
+      { tokens: [{ text: "}", cls: "text-foreground" }] },
+    ],
+    bottom: "16%", left: "3%", rotate: 3, delay: 2.4,
   },
   {
-    code: `async deploy() {\n  await build();\n  return "live";\n}`,
-    bottom: "12%",
-    right: "3%",
-    rotate: -3,
-    delay: 3.0,
-    size: "text-[10px] md:text-xs",
+    lines: [
+      { tokens: [{ text: "async ", cls: "text-purple-400" }, { text: "deploy", cls: "text-blue-400" }, { text: "() {", cls: "text-foreground" }] },
+      { tokens: [{ text: "  ", cls: "" }, { text: "await ", cls: "text-purple-400" }, { text: "build", cls: "text-blue-400" }, { text: "();", cls: "text-foreground" }] },
+      { tokens: [{ text: "  ", cls: "" }, { text: "return ", cls: "text-purple-400" }, { text: '"live"', cls: "text-green-400" }, { text: ";", cls: "text-foreground" }] },
+      { tokens: [{ text: "}", cls: "text-foreground" }] },
+    ],
+    bottom: "10%", right: "2%", rotate: -3, delay: 2.8,
   },
 ]
 
+/* ─── Floating micro-icons ─── */
 const floatingIcons = [
-  { Icon: Code2, top: "25%", left: "12%", delay: 2.0, size: 20 },
-  { Icon: Layers, top: "20%", right: "14%", delay: 2.3, size: 18 },
-  { Icon: Zap, bottom: "30%", left: "10%", delay: 2.5, size: 22 },
-  { Icon: Terminal, top: "40%", right: "8%", delay: 2.8, size: 16 },
-  { Icon: Palette, bottom: "25%", right: "18%", delay: 3.1, size: 20 },
-  { Icon: Database, top: "60%", left: "6%", delay: 3.3, size: 16 },
+  { Icon: Code2, top: "18%", left: "14%", delay: 1.8, size: 18 },
+  { Icon: Layers, top: "14%", right: "16%", delay: 2.1, size: 16 },
+  { Icon: Zap, bottom: "28%", left: "11%", delay: 2.4, size: 20 },
+  { Icon: Terminal, top: "38%", right: "6%", delay: 2.7, size: 15 },
+  { Icon: Palette, bottom: "22%", right: "15%", delay: 3.0, size: 18 },
+  { Icon: Database, top: "55%", left: "5%", delay: 3.2, size: 14 },
+  { Icon: Cpu, top: "30%", left: "6%", delay: 3.4, size: 16 },
+  { Icon: Globe, bottom: "35%", right: "10%", delay: 3.6, size: 17 },
+  { Icon: Figma, top: "65%", right: "4%", delay: 3.8, size: 14 },
+  { Icon: Braces, bottom: "40%", left: "15%", delay: 4.0, size: 15 },
+  { Icon: FileCode2, top: "48%", left: "3%", delay: 4.2, size: 16 },
 ]
 
+/* ─── Stat items for parallax glass cards ─── */
 const statItems = [
   { value: "150+", label: "Projects Delivered" },
   { value: "99%", label: "Client Satisfaction" },
   { value: "5+", label: "Years of Craft" },
 ]
 
-function GlowingLetter({ letter, index, total }: { letter: string; index: number; total: number }) {
-  const delay = 0.8 + index * 0.04
-  return (
-    <motion.span
-      initial={{ y: 80, opacity: 0, filter: "blur(10px)" }}
-      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-      transition={{
-        delay,
-        duration: 0.7,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className="inline-block"
-    >
-      {letter === " " ? "\u00A0" : letter}
-    </motion.span>
+/* ─── Magnetic Button Hook ─── */
+function useMagneticEffect() {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const springX = useSpring(x, { stiffness: 300, damping: 20 })
+  const springY = useSpring(y, { stiffness: 300, damping: 20 })
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (!ref.current) return
+      const rect = ref.current.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      const distX = e.clientX - centerX
+      const distY = e.clientY - centerY
+      x.set(distX * 0.3)
+      y.set(distY * 0.3)
+    },
+    [x, y]
   )
+
+  const handleMouseLeave = useCallback(() => {
+    x.set(0)
+    y.set(0)
+  }, [x, y])
+
+  return { ref, springX, springY, handleMouseMove, handleMouseLeave }
 }
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: true })
 
+  // Scroll-based outline-to-solid effect
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  })
+  const fillProgress = useTransform(scrollYProgress, [0, 0.3], [0, 1])
+  const fillOpacity = useTransform(fillProgress, [0, 1], [0, 1])
+  const outlineOpacity = useTransform(fillProgress, [0, 1], [1, 0])
+
+  // Parallax offsets for stat cards
+  const statY1 = useTransform(scrollYProgress, [0, 1], [0, -40])
+  const statY2 = useTransform(scrollYProgress, [0, 1], [0, -70])
+  const statY3 = useTransform(scrollYProgress, [0, 1], [0, -50])
+  const statYs = [statY1, statY2, statY3]
+
+  // Magnetic button
+  const magnetic = useMagneticEffect()
+
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-[110vh] flex flex-col items-center justify-center overflow-hidden"
     >
-      {/* Nebula Background */}
+      {/* ===== DEEP SPACE NEBULA BACKGROUND ===== */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Deep base */}
         <div className="absolute inset-0 bg-background" />
 
-        {/* Gradient blobs */}
+        {/* Indigo blob */}
         <div
-          className="nebula-blob-1 absolute -top-1/4 -left-1/4 w-[80vw] h-[80vw] rounded-full opacity-30"
-          style={{
-            background: "radial-gradient(circle, hsl(270 100% 50% / 0.4) 0%, transparent 70%)",
-          }}
+          className="nebula-blob-1 absolute -top-[30%] -left-[20%] w-[90vw] h-[90vw] rounded-full opacity-30"
+          style={{ background: "radial-gradient(circle, hsl(245 80% 40% / 0.5) 0%, transparent 65%)" }}
         />
+        {/* Purple blob */}
         <div
-          className="nebula-blob-2 absolute -top-1/3 -right-1/4 w-[70vw] h-[70vw] rounded-full opacity-25"
-          style={{
-            background: "radial-gradient(circle, hsl(220 90% 50% / 0.35) 0%, transparent 65%)",
-          }}
+          className="nebula-blob-2 absolute -top-[25%] -right-[15%] w-[80vw] h-[80vw] rounded-full opacity-30"
+          style={{ background: "radial-gradient(circle, hsl(265 100% 50% / 0.4) 0%, transparent 60%)" }}
         />
+        {/* Terracotta warm blob */}
         <div
-          className="nebula-blob-3 absolute -bottom-1/4 left-1/4 w-[60vw] h-[60vw] rounded-full opacity-25"
-          style={{
-            background: "radial-gradient(circle, hsl(320 100% 50% / 0.3) 0%, transparent 70%)",
-          }}
+          className="nebula-blob-3 absolute -bottom-[20%] left-[10%] w-[70vw] h-[70vw] rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, hsl(20 80% 50% / 0.35) 0%, transparent 65%)" }}
         />
+        {/* Deep magenta blob */}
         <div
-          className="nebula-blob-4 absolute top-1/3 right-1/3 w-[50vw] h-[50vw] rounded-full opacity-20"
-          style={{
-            background: "radial-gradient(circle, hsl(280 80% 60% / 0.3) 0%, transparent 60%)",
-          }}
+          className="nebula-blob-4 absolute top-[20%] right-[25%] w-[55vw] h-[55vw] rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, hsl(300 70% 45% / 0.3) 0%, transparent 55%)" }}
         />
-
-        {/* Subtle grain overlay */}
-        <div className="absolute inset-0 opacity-[0.015]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-        }} />
+        {/* Deep blue center blob */}
+        <div
+          className="nebula-blob-5 absolute top-[40%] left-[30%] w-[50vw] h-[50vw] rounded-full opacity-15"
+          style={{ background: "radial-gradient(circle, hsl(220 90% 50% / 0.35) 0%, transparent 60%)" }}
+        />
 
         {/* Cyber grid */}
         <div className="absolute inset-0 cyber-grid" />
       </div>
 
-      {/* Floating Code Snippets */}
+      {/* ===== FLOATING CODE SNIPPETS (syntax-highlighted) ===== */}
       {codeSnippets.map((snippet, i) => (
         <motion.div
-          key={i}
-          initial={{ opacity: 0, scale: 0.8 }}
+          key={`code-${i}`}
+          initial={{ opacity: 0, scale: 0.7 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ delay: snippet.delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="float-code absolute hidden md:block pointer-events-none"
+          transition={{ delay: snippet.delay, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="float-code absolute hidden lg:block pointer-events-none"
           style={{
             top: snippet.top,
             left: snippet.left,
@@ -138,82 +200,103 @@ export function Hero() {
             animationDelay: `${i * 1.5}s`,
           }}
         >
-          <div className="relative rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-3 md:p-4 shadow-[0_4px_30px_hsl(270_100%_65%/0.08)]">
-            <div className="flex items-center gap-1.5 mb-2">
-              <div className="w-2 h-2 rounded-full bg-accent/60" />
-              <div className="w-2 h-2 rounded-full bg-primary/40" />
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+          <div className="glass-card-heavy rounded-xl p-3 xl:p-4 shadow-[0_4px_40px_hsl(265_100%_65%/0.08)]">
+            {/* Terminal dots */}
+            <div className="flex items-center gap-1.5 mb-2.5">
+              <div className="w-2 h-2 rounded-full bg-red-400/50" />
+              <div className="w-2 h-2 rounded-full bg-yellow-400/40" />
+              <div className="w-2 h-2 rounded-full bg-green-400/40" />
             </div>
-            <pre className={`${snippet.size} font-mono text-primary/70 leading-relaxed whitespace-pre`}>
-              {snippet.code}
-            </pre>
+            {/* Syntax-highlighted lines */}
+            <div className="font-mono text-[10px] xl:text-xs leading-relaxed">
+              {snippet.lines.map((line, li) => (
+                <div key={li}>
+                  {line.tokens.map((token, ti) => (
+                    <span key={ti} className={token.cls}>{token.text}</span>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
       ))}
 
-      {/* Floating Icons */}
+      {/* ===== FLOATING MICRO-ICONS ===== */}
       {floatingIcons.map(({ Icon, top, left, right, bottom, delay, size }, i) => (
         <motion.div
-          key={i}
+          key={`icon-${i}`}
           initial={{ opacity: 0, scale: 0 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ delay, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="float-code absolute pointer-events-none"
           style={{
             top, left, right, bottom,
-            animationDelay: `${i * 2 + 1}s`,
-            animationDuration: `${7 + i}s`,
+            animationDelay: `${i * 1.8 + 0.5}s`,
+            animationDuration: `${6 + i * 0.5}s`,
           }}
         >
-          <div className="p-2.5 md:p-3 rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm">
-            <Icon
-              style={{ width: size, height: size }}
-              className="text-primary/50"
-            />
+          <div className="glass-card p-2 md:p-2.5 rounded-xl">
+            <Icon style={{ width: size, height: size }} className="text-primary/50" />
           </div>
         </motion.div>
       ))}
 
-      {/* Center Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-6xl mx-auto">
+      {/* ===== CENTER CONTENT ===== */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-7xl mx-auto">
         {/* Tagline Pill */}
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{ delay: 0.4, duration: 0.8 }}
           className="mb-8 md:mb-10"
         >
-          <span className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-white/[0.08] bg-white/[0.04] backdrop-blur-md text-xs font-medium tracking-widest uppercase text-muted-foreground">
+          <span className="glass-card-heavy inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-xs font-medium tracking-widest uppercase text-muted-foreground">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
             Digital Art Through Code
           </span>
         </motion.div>
 
-        {/* Main Title */}
+        {/* ===== MAIN TITLE: Outline-to-Solid on Scroll ===== */}
         <h1 className="relative mb-6 md:mb-8">
-          {/* Glow behind text */}
-          <div className="absolute inset-0 blur-3xl opacity-20 bg-gradient-to-r from-primary via-accent to-primary pointer-events-none" />
+          {/* Glow aura behind text */}
+          <div className="absolute inset-0 blur-[80px] opacity-25 bg-gradient-to-r from-primary via-accent to-primary pointer-events-none scale-150" />
 
           <div className="relative">
-            {/* WEB */}
-            <div className="overflow-hidden">
-              <div className="text-[clamp(3.5rem,12vw,10rem)] font-black leading-[0.85] tracking-[-0.04em] text-foreground">
-                {isInView && "WEB".split("").map((l, i) => (
-                  <GlowingLetter key={`web-${i}`} letter={l} index={i} total={3} />
-                ))}
-              </div>
+            {/* WEB - Outline layer (fades out on scroll) */}
+            <div className="relative overflow-hidden">
+              <motion.div
+                style={{ opacity: outlineOpacity }}
+                className="text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] text-outline"
+              >
+                {"WEB"}
+              </motion.div>
+              {/* WEB - Solid fill layer (fades in on scroll) */}
+              <motion.div
+                style={{ opacity: fillOpacity }}
+                className="absolute inset-0 text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] text-foreground"
+              >
+                {"WEB"}
+              </motion.div>
             </div>
 
-            {/* ShoiLi */}
-            <div className="overflow-hidden -mt-2 md:-mt-4">
-              <div className="text-[clamp(3.5rem,12vw,10rem)] font-black leading-[0.85] tracking-[-0.04em] glow-text bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                {isInView && "ShoiLi".split("").map((l, i) => (
-                  <GlowingLetter key={`shoili-${i}`} letter={l} index={i + 4} total={6} />
-                ))}
-              </div>
+            {/* ShoiLi - Outline layer (fades out on scroll) */}
+            <div className="relative overflow-hidden -mt-2 md:-mt-4">
+              <motion.div
+                style={{ opacity: outlineOpacity }}
+                className="text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] text-outline"
+              >
+                {"ShoiLi"}
+              </motion.div>
+              {/* ShoiLi - Gradient solid fill layer */}
+              <motion.div
+                style={{ opacity: fillOpacity }}
+                className="absolute inset-0 text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] glow-text bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
+              >
+                {"ShoiLi"}
+              </motion.div>
             </div>
           </div>
         </h1>
@@ -222,44 +305,48 @@ export function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 1.6, duration: 0.8 }}
-          className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-xl leading-relaxed mb-10 md:mb-12"
+          transition={{ delay: 1.0, duration: 0.8 }}
+          className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-10 md:mb-12"
         >
           Where raw engineering power meets{" "}
           <span className="text-foreground font-medium">sophisticated artistic design</span>.
-          We don{"'"}t just build software {"--"} we craft digital masterpieces.
+          We don{"'"}t just build software {"--"} we craft{" "}
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-semibold">digital masterpieces</span>.
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons with Magnetic Pull */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 1.9, duration: 0.8 }}
+          transition={{ delay: 1.3, duration: 0.8 }}
           className="flex flex-col sm:flex-row items-center gap-4 mb-16 md:mb-20"
         >
-          <a
+          <motion.a
+            ref={magnetic.ref}
             href="#contact"
+            style={{ x: magnetic.springX, y: magnetic.springY }}
+            onMouseMove={magnetic.handleMouseMove}
+            onMouseLeave={magnetic.handleMouseLeave}
             className="
-              group relative flex items-center gap-2.5 px-8 py-3.5
-              rounded-full text-sm font-semibold
-              bg-gradient-to-r from-primary to-accent
+              magnetic-btn group relative flex items-center gap-2.5 px-9 py-4
+              rounded-full text-sm font-bold
+              bg-gradient-to-r from-primary via-primary to-accent
               text-primary-foreground
-              shadow-[0_0_30px_hsl(270_100%_65%/0.3),0_0_60px_hsl(320_100%_60%/0.15)]
-              hover:shadow-[0_0_40px_hsl(270_100%_65%/0.5),0_0_80px_hsl(320_100%_60%/0.25)]
-              transition-all duration-500
+              shadow-[0_0_30px_hsl(265_100%_65%/0.35),0_0_60px_hsl(20_80%_55%/0.12)]
+              hover:shadow-[0_0_50px_hsl(265_100%_65%/0.55),0_0_90px_hsl(20_80%_55%/0.2)]
+              transition-shadow duration-500
             "
           >
             Start Your Project
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-          </a>
+          </motion.a>
           <a
             href="#work"
             className="
-              flex items-center gap-2.5 px-8 py-3.5
+              glass-card-heavy flex items-center gap-2.5 px-8 py-3.5
               rounded-full text-sm font-medium
-              border border-white/[0.1] bg-white/[0.03] backdrop-blur-md
               text-foreground
-              hover:bg-white/[0.06] hover:border-white/[0.15]
+              hover:bg-white/[0.08]
               transition-all duration-300
             "
           >
@@ -267,50 +354,47 @@ export function Hero() {
           </a>
         </motion.div>
 
-        {/* Stats Row */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 2.2, duration: 0.8 }}
-          className="flex items-center gap-6 md:gap-12"
-        >
+        {/* ===== STATS IN FLOATING GLASS CARDS WITH PARALLAX ===== */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-6">
           {statItems.map((stat, i) => (
-            <div key={stat.label} className="flex items-center gap-6 md:gap-12">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
-                  {stat.value}
-                </div>
-                <div className="text-[10px] md:text-xs text-muted-foreground tracking-wider uppercase mt-1">
-                  {stat.label}
-                </div>
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ delay: 1.6 + i * 0.15, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+              style={{ y: statYs[i] }}
+              className="glass-card-heavy rounded-2xl px-8 py-6 text-center min-w-[140px] group hover:border-primary/20 transition-all duration-500"
+            >
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent tracking-tight mb-1">
+                {stat.value}
               </div>
-              {i < statItems.length - 1 && (
-                <div className="w-px h-8 bg-white/[0.08]" />
-              )}
-            </div>
+              <div className="text-[10px] md:text-xs text-muted-foreground tracking-wider uppercase">
+                {stat.label}
+              </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
 
       {/* Scroll cue */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 2.8, duration: 0.8 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
+        transition={{ delay: 2.2, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
       >
         <motion.div
           animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-          className="w-5 h-8 rounded-full border border-white/[0.15] flex items-start justify-center pt-1.5"
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-5 h-9 rounded-full border border-white/[0.12] flex items-start justify-center pt-2"
         >
           <motion.div
-            animate={{ opacity: [1, 0.3, 1], y: [0, 4, 0] }}
-            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="w-1 h-1.5 rounded-full bg-primary"
+            animate={{ opacity: [1, 0.3, 1], y: [0, 5, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="w-1 h-2 rounded-full bg-primary"
           />
         </motion.div>
       </motion.div>

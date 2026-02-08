@@ -51,14 +51,14 @@ export function Testimonials() {
       </div>
 
       {/* Testimonials Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {testimonials.map((testimonial, i) => (
           <motion.div
             key={testimonial.author}
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.3 + i * 0.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-            className="relative p-8 lg:p-12 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-md group hover:border-primary/20 hover:bg-white/[0.05] transition-all duration-500"
+            className="glass-card-heavy p-8 lg:p-12 rounded-2xl group hover:border-primary/20 transition-all duration-500"
           >
             <Quote className="w-8 h-8 text-primary/30 mb-6" />
 

@@ -60,108 +60,109 @@ export function Contact() {
           </motion.div>
         </div>
 
-        {/* Form */}
-        <motion.form
+        {/* Form inside a glass card */}
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4, duration: 0.8 }}
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-4xl"
+          className="glass-card-heavy rounded-3xl p-8 lg:p-12 max-w-4xl"
         >
-          {/* Name */}
-          <div className="space-y-2">
-            <label htmlFor="name" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
-              Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              required
-              placeholder="Your full name"
-              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+            {/* Name */}
+            <div className="space-y-2">
+              <label htmlFor="name" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                required
+                placeholder="Your full name"
+                className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
+              />
+            </div>
 
-          {/* Email */}
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              placeholder="you@company.com"
-              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
-            />
-          </div>
+            {/* Email */}
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                placeholder="you@company.com"
+                className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
+              />
+            </div>
 
-          {/* Organization */}
-          <div className="space-y-2">
-            <label htmlFor="organization" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
-              Organization
-            </label>
-            <input
-              id="organization"
-              type="text"
-              placeholder="Company name"
-              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
-            />
-          </div>
+            {/* Organization */}
+            <div className="space-y-2">
+              <label htmlFor="organization" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                Organization
+              </label>
+              <input
+                id="organization"
+                type="text"
+                placeholder="Company name"
+                className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
+              />
+            </div>
 
-          {/* Service */}
-          <div className="space-y-2">
-            <label htmlFor="service" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
-              Service Needed
-            </label>
-            <select
-              id="service"
-              value={selectedService}
-              onChange={(e) => setSelectedService(e.target.value)}
-              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground focus:outline-none focus:border-primary transition-colors text-base appearance-none cursor-pointer [&>option]:bg-card [&>option]:text-foreground"
-            >
-              <option value="">Select a service</option>
-              {serviceOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Service */}
+            <div className="space-y-2">
+              <label htmlFor="service" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                Service Needed
+              </label>
+              <select
+                id="service"
+                value={selectedService}
+                onChange={(e) => setSelectedService(e.target.value)}
+                className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground focus:outline-none focus:border-primary transition-colors text-base appearance-none cursor-pointer [&>option]:bg-[hsl(260_40%_7%)] [&>option]:text-foreground"
+              >
+                <option value="">Select a service</option>
+                {serviceOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Message */}
-          <div className="lg:col-span-2 space-y-2">
-            <label htmlFor="message" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
-              Message
-            </label>
-            <textarea
-              id="message"
-              required
-              rows={4}
-              placeholder="Tell us about your project, timeline, and budget range..."
-              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base resize-none"
-            />
-          </div>
+            {/* Message */}
+            <div className="lg:col-span-2 space-y-2">
+              <label htmlFor="message" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                Message
+              </label>
+              <textarea
+                id="message"
+                required
+                rows={4}
+                placeholder="Tell us about your project, timeline, and budget range..."
+                className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base resize-none"
+              />
+            </div>
 
-          {/* Submit */}
-          <div className="lg:col-span-2 pt-4">
-            <motion.button
-              type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="group flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold rounded-full shadow-[0_0_20px_hsl(270_100%_65%/0.3)] hover:shadow-[0_0_30px_hsl(270_100%_65%/0.5)] transition-all duration-500"
-            >
-              {formSubmitted ? (
-                "Message Sent"
-              ) : (
-                <>
-                  Submit Inquiry
-                  <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </>
-              )}
-            </motion.button>
-          </div>
-        </motion.form>
+            {/* Submit */}
+            <div className="lg:col-span-2 pt-4">
+              <motion.button
+                type="submit"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-bold rounded-full shadow-[0_0_20px_hsl(265_100%_65%/0.3)] hover:shadow-[0_0_35px_hsl(265_100%_65%/0.5)] transition-all duration-500"
+              >
+                {formSubmitted ? (
+                  "Message Sent"
+                ) : (
+                  <>
+                    Submit Inquiry
+                    <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </form>
+        </motion.div>
       </div>
     </section>
   )

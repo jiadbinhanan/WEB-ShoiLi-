@@ -1,208 +1,296 @@
 "use client"
 
-import { useRef, useState } from "react"
-import { motion, useInView, AnimatePresence } from "framer-motion"
-import { ArrowUpRight, Code2, Palette, FileText } from "lucide-react"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import {
+  Code2,
+  Server,
+  Shield,
+  Zap,
+  Globe,
+  Database,
+  Palette,
+  PenTool,
+  Megaphone,
+  FileText,
+  FileSpreadsheet,
+  Layers,
+} from "lucide-react"
 
-const services = [
+/* ═══════════════════════════════════════════════
+   SECTION A: Digital Engineering & Software
+   Visual Style: Tech/Grid with Glowing Lines
+   ═══════════════════════════════════════════════ */
+
+const engineeringCapabilities = [
   {
-    number: "01",
-    title: "Engineering",
-    subtitle: "Web & Software Development",
-    description:
-      "High-performance web applications, scalable SaaS platforms, and custom software solutions built with cutting-edge technology stacks. We engineer systems that are as elegant under the hood as they are on the surface.",
-    capabilities: [
-      "Full-Stack Web Apps",
-      "SaaS Platforms",
-      "E-Commerce",
-      "API Architecture",
-      "Performance Optimization",
-      "Cloud Infrastructure",
-    ],
+    icon: Globe,
+    title: "Full-Stack Web Apps",
+    desc: "React, Next.js, and Node.js ecosystems built for scale and speed.",
+  },
+  {
+    icon: Server,
+    title: "SaaS Platforms",
+    desc: "Multi-tenant architectures with robust billing, auth, and analytics.",
+  },
+  {
+    icon: Database,
+    title: "API Architecture",
+    desc: "RESTful and GraphQL APIs with comprehensive documentation.",
+  },
+  {
+    icon: Shield,
+    title: "Cloud & Security",
+    desc: "AWS/Vercel deployments with enterprise-grade security protocols.",
+  },
+  {
+    icon: Zap,
+    title: "Performance Optimization",
+    desc: "Sub-second load times through intelligent caching and code splitting.",
+  },
+  {
     icon: Code2,
-  },
-  {
-    number: "02",
-    title: "Creative",
-    subtitle: "Design & Brand Identity",
-    description:
-      "From brand identities that command attention to campaign visuals that stop the scroll. We create design systems, advertising materials, and visual narratives that elevate your brand above the noise.",
-    capabilities: [
-      "Brand Identity",
-      "UI/UX Design",
-      "Poster & Ad Design",
-      "Social Media Creatives",
-      "Motion Graphics",
-      "Design Systems",
-    ],
-    icon: Palette,
-  },
-  {
-    number: "03",
-    title: "Professional Suite",
-    subtitle: "Business Automation & Documents",
-    description:
-      "Transform your business operations with professionally designed document ecosystems. Custom invoices, automated PDF forms, and branded corporate documentation that make every touchpoint feel premium.",
-    capabilities: [
-      "Invoice Design",
-      "PDF Form Systems",
-      "Report Templates",
-      "Proposal Decks",
-      "Automated Documents",
-      "Corporate Identity Kits",
-    ],
-    icon: FileText,
+    title: "Custom Software",
+    desc: "Bespoke solutions engineered precisely for your business logic.",
   },
 ]
 
-function ServiceCard({
-  service,
-  index,
-  isInView,
-}: {
-  service: (typeof services)[0]
-  index: number
-  isInView: boolean
-}) {
-  const [isHovered, setIsHovered] = useState(false)
-  const Icon = service.icon
+export function EngineeringSection() {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: 0.2 + index * 0.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative border-b border-white/[0.06] py-10 lg:py-14 cursor-pointer"
-    >
-      <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
-        {/* Left: Number and Icon */}
-        <div className="flex items-center gap-4 lg:w-48 flex-shrink-0">
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">
-            {service.number}
-          </span>
+    <section id="engineering" ref={ref} className="relative py-24 lg:py-40 px-6 lg:px-12 overflow-hidden">
+      {/* Tech Grid Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 cyber-grid opacity-60" />
+        {/* Horizontal glowing lines */}
+        {[20, 40, 60, 80].map((top) => (
+          <div
+            key={top}
+            className="tech-grid-line absolute left-0 right-0 h-px"
+            style={{
+              top: `${top}%`,
+              background: "linear-gradient(90deg, transparent 0%, hsl(265 100% 65% / 0.15) 30%, hsl(265 100% 65% / 0.08) 70%, transparent 100%)",
+              animationDelay: `${top * 0.05}s`,
+            }}
+          />
+        ))}
+        {/* Vertical glowing lines */}
+        {[25, 50, 75].map((left) => (
+          <div
+            key={left}
+            className="tech-grid-line absolute top-0 bottom-0 w-px"
+            style={{
+              left: `${left}%`,
+              background: "linear-gradient(180deg, transparent 0%, hsl(265 100% 65% / 0.1) 30%, hsl(265 100% 65% / 0.06) 70%, transparent 100%)",
+              animationDelay: `${left * 0.04}s`,
+            }}
+          />
+        ))}
+        {/* Ambient glow */}
+        <div
+          className="nebula-blob-2 absolute -top-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full opacity-10"
+          style={{ background: "radial-gradient(circle, hsl(265 100% 50% / 0.3) 0%, transparent 60%)" }}
+        />
+      </div>
+
+      <div className="relative max-w-[1800px] mx-auto">
+        {/* Section Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 lg:mb-24">
           <motion.div
-            animate={isHovered ? { scale: 1.1, rotate: -5 } : { scale: 1, rotate: 0 }}
-            transition={{ duration: 0.3 }}
-            className="p-2.5 rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-4"
           >
-            <Icon className="w-5 h-5 text-primary" />
+            <span className="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-primary">
+              <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_hsl(265_100%_65%/0.6)]" />
+              Section A
+            </span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="lg:col-span-8"
+          >
+            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-foreground text-balance">
+              Digital Engineering{" "}
+              <span className="italic font-light bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
+                {"&"} Software
+              </span>
+            </h2>
+            <p className="mt-4 text-base lg:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+              High-performance web applications, scalable SaaS platforms, and custom software solutions
+              built with cutting-edge technology stacks.
+            </p>
           </motion.div>
         </div>
 
-        {/* Middle: Content */}
-        <div className="flex-1">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h3 className="text-2xl lg:text-4xl font-bold text-foreground tracking-tight group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                {service.title}
-              </h3>
-              <p className="text-sm text-muted-foreground mt-1 tracking-wide">
-                {service.subtitle}
-              </p>
-            </div>
-            <motion.div
-              animate={isHovered ? { x: 4, y: -4 } : { x: 0, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="hidden lg:block"
-            >
-              <ArrowUpRight className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
-            </motion.div>
-          </div>
-
-          <p className="text-muted-foreground leading-relaxed max-w-xl mb-6">
-            {service.description}
-          </p>
-
-          {/* Capabilities */}
-          <AnimatePresence>
-            {isHovered && (
+        {/* Capability Cards - Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+          {engineeringCapabilities.map((cap, i) => {
+            const Icon = cap.icon
+            return (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                className="overflow-hidden"
+                key={cap.title}
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3 + i * 0.1, duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
+                className="group glass-card-heavy rounded-2xl p-6 lg:p-8 hover:border-primary/20 transition-all duration-500 relative overflow-hidden"
               >
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {service.capabilities.map((cap, i) => (
-                    <motion.span
-                      key={cap}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05, duration: 0.3 }}
-                      className="px-3 py-1.5 text-xs font-medium rounded-full border border-white/[0.08] text-muted-foreground bg-white/[0.03] backdrop-blur-sm"
-                    >
-                      {cap}
-                    </motion.span>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                {/* Corner accent */}
+                <div className="absolute -top-px -right-px w-16 h-16 bg-gradient-to-br from-primary/15 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-          {/* Mobile capabilities (always visible) */}
-          <div className="flex flex-wrap gap-2 lg:hidden">
-            {service.capabilities.map((cap) => (
-              <span
-                key={cap}
-                className="px-3 py-1.5 text-xs font-medium rounded-full border border-white/[0.08] text-muted-foreground bg-white/[0.03]"
-              >
-                {cap}
-              </span>
-            ))}
-          </div>
+                <div className="glass-card p-3 rounded-xl w-fit mb-5 group-hover:border-primary/20 transition-colors duration-300">
+                  <Icon className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2 tracking-tight group-hover:text-primary transition-colors duration-300">
+                  {cap.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {cap.desc}
+                </p>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
-
-      {/* Hover accent line - gradient */}
-      <motion.div
-        className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-primary to-accent"
-        initial={{ width: "0%" }}
-        animate={isHovered ? { width: "100%" } : { width: "0%" }}
-        transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-      />
-    </motion.div>
+    </section>
   )
 }
 
-export function Services() {
+/* ═══════════════════════════════════════════════
+   SECTION B: Creative Arts & Documentation
+   Visual Style: Fluid/Artistic with Brush-Strokes
+   ═══════════════════════════════════════════════ */
+
+const creativeCapabilities = [
+  {
+    icon: Palette,
+    title: "Brand Identity",
+    desc: "Logo systems, color palettes, and typography guidelines that command attention.",
+  },
+  {
+    icon: PenTool,
+    title: "UI/UX Design",
+    desc: "Intuitive interfaces designed from research, refined through testing.",
+  },
+  {
+    icon: Megaphone,
+    title: "Ad Creatives & Posters",
+    desc: "Campaign visuals that stop the scroll and drive conversion.",
+  },
+  {
+    icon: FileText,
+    title: "Professional Suite",
+    desc: "Branded invoices, proposals, and PDF form systems that automate operations.",
+  },
+  {
+    icon: FileSpreadsheet,
+    title: "Document Automation",
+    desc: "Dynamic templates with data binding for reports, invoices, and contracts.",
+  },
+  {
+    icon: Layers,
+    title: "Design Systems",
+    desc: "Scalable component libraries ensuring brand consistency across all touchpoints.",
+  },
+]
+
+export function CreativeSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section id="services" ref={ref} className="relative py-24 lg:py-40 px-6 lg:px-12 max-w-[1800px] mx-auto">
-      {/* Section Header */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 lg:mb-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="lg:col-span-3"
-        >
-          <span className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
-            Our Services
-          </span>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="lg:col-span-9"
-        >
-          <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-foreground text-balance">
-            Three pillars of{" "}
-            <span className="italic font-light bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">digital craft</span>
-          </h2>
-        </motion.div>
+    <section id="creative" ref={ref} className="relative py-24 lg:py-40 px-6 lg:px-12 overflow-hidden">
+      {/* Fluid artistic background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Warm terracotta glow */}
+        <div
+          className="nebula-blob-3 absolute -bottom-[30%] -left-[15%] w-[70vw] h-[70vw] rounded-full opacity-15"
+          style={{ background: "radial-gradient(circle, hsl(20 80% 50% / 0.4) 0%, transparent 60%)" }}
+        />
+        {/* Purple creative glow */}
+        <div
+          className="nebula-blob-1 absolute -top-[25%] -right-[10%] w-[55vw] h-[55vw] rounded-full opacity-12"
+          style={{ background: "radial-gradient(circle, hsl(280 80% 55% / 0.3) 0%, transparent 55%)" }}
+        />
+
+        {/* Artistic brush stroke elements */}
+        <svg className="absolute top-[15%] left-[5%] w-[300px] h-[200px] opacity-[0.04]" viewBox="0 0 300 200" aria-hidden="true">
+          <path d="M10,100 Q80,20 150,100 T290,100" fill="none" stroke="hsl(20 80% 55%)" strokeWidth="3" strokeLinecap="round" />
+        </svg>
+        <svg className="absolute bottom-[20%] right-[8%] w-[250px] h-[150px] opacity-[0.04]" viewBox="0 0 250 150" aria-hidden="true">
+          <path d="M10,75 C60,10 120,140 240,75" fill="none" stroke="hsl(265 100% 65%)" strokeWidth="2.5" strokeLinecap="round" />
+        </svg>
+        <svg className="absolute top-[50%] left-[40%] w-[200px] h-[200px] opacity-[0.03]" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="80" fill="none" stroke="hsl(20 80% 55%)" strokeWidth="1.5" strokeDasharray="8 12" />
+        </svg>
       </div>
 
-      {/* Service Cards */}
-      <div className="border-t border-white/[0.06]">
-        {services.map((service, i) => (
-          <ServiceCard key={service.number} service={service} index={i} isInView={isInView} />
-        ))}
+      <div className="relative max-w-[1800px] mx-auto">
+        {/* Section Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 lg:mb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-4"
+          >
+            <span className="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-accent">
+              <span className="w-2 h-2 rounded-full bg-accent shadow-[0_0_8px_hsl(20_80%_55%/0.6)]" />
+              Section B
+            </span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="lg:col-span-8"
+          >
+            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-foreground text-balance">
+              Creative Arts{" "}
+              <span className="italic font-light bg-gradient-to-r from-accent to-orange-300 bg-clip-text text-transparent">
+                {"&"} Documentation
+              </span>
+            </h2>
+            <p className="mt-4 text-base lg:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+              From brand identities that command attention to automated document ecosystems
+              that elevate every business touchpoint.
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Creative Capability Cards - Alternating Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+          {creativeCapabilities.map((cap, i) => {
+            const Icon = cap.icon
+            return (
+              <motion.div
+                key={cap.title}
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3 + i * 0.1, duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
+                className="group glass-card-heavy rounded-2xl p-6 lg:p-8 hover:border-accent/20 transition-all duration-500 relative overflow-hidden"
+              >
+                {/* Warm corner accent */}
+                <div className="absolute -top-px -right-px w-16 h-16 bg-gradient-to-br from-accent/15 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                <div className="glass-card p-3 rounded-xl w-fit mb-5 group-hover:border-accent/20 transition-colors duration-300">
+                  <Icon className="w-5 h-5 text-accent" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2 tracking-tight group-hover:text-accent transition-colors duration-300">
+                  {cap.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {cap.desc}
+                </p>
+              </motion.div>
+            )
+          })}
+        </div>
       </div>
     </section>
   )

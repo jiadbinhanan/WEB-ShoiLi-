@@ -53,15 +53,15 @@ export function About() {
             campaigns, we bring the same obsessive attention to detail.
           </motion.p>
 
-          {/* Stats */}
-          <div className="flex flex-wrap gap-8 lg:gap-16">
+          {/* Stats in glass cards */}
+          <div className="flex flex-wrap gap-4 lg:gap-6">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.6 + i * 0.15, duration: 0.6 }}
-                className="relative p-6 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-md"
+                className="glass-card-heavy p-6 lg:p-8 rounded-2xl group hover:border-primary/20 transition-all duration-500"
               >
                 <span className="block text-4xl lg:text-6xl font-bold bg-gradient-to-b from-foreground to-foreground/50 bg-clip-text text-transparent tracking-tight">
                   {stat.number}

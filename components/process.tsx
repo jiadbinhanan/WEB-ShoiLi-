@@ -41,12 +41,10 @@ export function Process() {
       className="relative py-24 lg:py-40 px-6 lg:px-12 overflow-hidden"
     >
       {/* Background glow */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         <div
-          className="nebula-blob-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[60vh] rounded-full opacity-15"
-          style={{
-            background: "radial-gradient(circle, hsl(270 100% 50% / 0.3) 0%, transparent 70%)",
-          }}
+          className="nebula-blob-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[60vh] rounded-full opacity-10"
+          style={{ background: "radial-gradient(circle, hsl(265 100% 50% / 0.3) 0%, transparent 70%)" }}
         />
       </div>
 
@@ -84,14 +82,14 @@ export function Process() {
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.15, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-              className="relative group p-8 lg:p-10 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-md hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-500"
+              className="relative group glass-card-heavy p-8 lg:p-10 rounded-2xl hover:border-primary/20 transition-all duration-500"
             >
               {/* Step Number */}
               <span className="block text-6xl lg:text-7xl font-bold text-foreground/[0.04] mb-6 tracking-tighter">
                 {step.number}
               </span>
 
-              <h3 className="text-xl lg:text-2xl font-bold text-foreground tracking-tight mb-4 group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+              <h3 className="text-xl lg:text-2xl font-bold text-foreground tracking-tight mb-4 group-hover:text-primary transition-colors duration-300">
                 {step.title}
               </h3>
 
@@ -103,13 +101,14 @@ export function Process() {
               <div className="absolute top-8 right-8">
                 <motion.div
                   className="w-2 h-2 rounded-full bg-primary"
+                  style={{ boxShadow: "0 0 8px hsl(265 100% 65% / 0.5)" }}
                   animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, delay: i * 0.5 }}
+                  transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
                 />
               </div>
 
               {/* Corner glow on hover */}
-              <div className="absolute -top-px -right-px w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute -top-px -right-px w-20 h-20 bg-gradient-to-br from-primary/15 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </motion.div>
           ))}
         </div>
