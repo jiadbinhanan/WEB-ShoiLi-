@@ -24,15 +24,15 @@ export function MarqueeBand() {
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : {}}
       transition={{ duration: 0.8 }}
-      className="relative py-8 lg:py-10 border-y border-border overflow-hidden bg-secondary"
+      className="relative py-8 lg:py-10 border-y border-white/[0.06] overflow-hidden bg-white/[0.02]"
     >
       <div className="animate-marquee flex items-center whitespace-nowrap">
         {[...words, ...words, ...words, ...words].map((word, i) => (
           <span key={`${word}-${i}`} className="flex items-center">
-            <span className="text-sm lg:text-base font-medium tracking-wider uppercase text-foreground px-6 lg:px-10">
+            <span className="text-sm lg:text-base font-medium tracking-wider uppercase text-foreground/60 px-6 lg:px-10">
               {word}
             </span>
-            <span className="w-2 h-2 rounded-full bg-accent flex-shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
           </span>
         ))}
       </div>

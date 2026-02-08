@@ -1,10 +1,9 @@
 "use client"
 
 import React from "react"
-
 import { useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
-import { ArrowUpRight, Send } from "lucide-react"
+import { Send } from "lucide-react"
 
 const serviceOptions = [
   "Web Development",
@@ -29,7 +28,7 @@ export function Contact() {
     <section
       id="contact"
       ref={ref}
-      className="relative py-24 lg:py-40 px-6 lg:px-12 border-t border-border"
+      className="relative py-24 lg:py-40 px-6 lg:px-12 border-t border-white/[0.06]"
     >
       <div className="max-w-[1800px] mx-auto">
         {/* Section Header */}
@@ -52,10 +51,10 @@ export function Contact() {
           >
             <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-foreground text-balance">
               Ask us{" "}
-              <span className="italic font-light text-accent">anything</span>.
+              <span className="italic font-light bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">anything</span>.
             </h2>
             <p className="text-base lg:text-lg text-muted-foreground mt-4 max-w-xl leading-relaxed">
-              Are you a company or brand seeking creative services? Let{"'"}s connect 
+              Are you a company or brand seeking creative services? Let{"'"}s connect
               and explore what we can build together.
             </p>
           </motion.div>
@@ -79,7 +78,7 @@ export function Contact() {
               type="text"
               required
               placeholder="Your full name"
-              className="w-full bg-transparent border-b border-border py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-accent transition-colors text-base"
+              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
             />
           </div>
 
@@ -93,7 +92,7 @@ export function Contact() {
               type="email"
               required
               placeholder="you@company.com"
-              className="w-full bg-transparent border-b border-border py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-accent transition-colors text-base"
+              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
             />
           </div>
 
@@ -106,7 +105,7 @@ export function Contact() {
               id="organization"
               type="text"
               placeholder="Company name"
-              className="w-full bg-transparent border-b border-border py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-accent transition-colors text-base"
+              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base"
             />
           </div>
 
@@ -119,9 +118,9 @@ export function Contact() {
               id="service"
               value={selectedService}
               onChange={(e) => setSelectedService(e.target.value)}
-              className="w-full bg-transparent border-b border-border py-3 text-foreground focus:outline-none focus:border-accent transition-colors text-base appearance-none cursor-pointer"
+              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground focus:outline-none focus:border-primary transition-colors text-base appearance-none cursor-pointer [&>option]:bg-card [&>option]:text-foreground"
             >
-              <option value="" className="text-muted-foreground">Select a service</option>
+              <option value="">Select a service</option>
               {serviceOptions.map((option) => (
                 <option key={option} value={option}>
                   {option}
@@ -140,7 +139,7 @@ export function Contact() {
               required
               rows={4}
               placeholder="Tell us about your project, timeline, and budget range..."
-              className="w-full bg-transparent border-b border-border py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-accent transition-colors text-base resize-none"
+              className="w-full bg-transparent border-b border-white/[0.1] py-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary transition-colors text-base resize-none"
             />
           </div>
 
@@ -150,7 +149,7 @@ export function Contact() {
               type="submit"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="group flex items-center gap-3 px-8 py-3.5 bg-primary text-primary-foreground text-sm font-medium rounded-full hover:bg-accent transition-all duration-300"
+              className="group flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold rounded-full shadow-[0_0_20px_hsl(270_100%_65%/0.3)] hover:shadow-[0_0_30px_hsl(270_100%_65%/0.5)] transition-all duration-500"
             >
               {formSubmitted ? (
                 "Message Sent"

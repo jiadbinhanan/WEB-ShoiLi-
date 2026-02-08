@@ -11,7 +11,7 @@ const projects = [
     description: "A next-gen fintech dashboard with real-time data visualization and seamless UX for institutional investors.",
     tags: ["React", "TypeScript", "D3.js"],
     year: "2025",
-    color: "hsl(220 60% 20%)",
+    gradient: "from-primary/40 via-primary/20 to-accent/30",
   },
   {
     title: "Vanta Studios",
@@ -19,7 +19,7 @@ const projects = [
     description: "Complete brand overhaul for a creative agency, including logo system, typography guidelines, and campaign visuals.",
     tags: ["Branding", "Identity", "Print"],
     year: "2025",
-    color: "hsl(20 80% 50%)",
+    gradient: "from-accent/40 via-accent/20 to-primary/30",
   },
   {
     title: "Atlas Corp",
@@ -27,7 +27,7 @@ const projects = [
     description: "Automated document ecosystem including invoices, proposals, and reports with dynamic data binding and branded templates.",
     tags: ["PDF Systems", "Automation", "Design"],
     year: "2024",
-    color: "hsl(220 60% 20%)",
+    gradient: "from-blue-600/30 via-primary/20 to-blue-500/20",
   },
   {
     title: "Solstice Health",
@@ -35,7 +35,7 @@ const projects = [
     description: "Patient portal and telehealth platform handling 100K+ monthly active users with HIPAA-compliant architecture.",
     tags: ["Next.js", "Node.js", "AWS"],
     year: "2024",
-    color: "hsl(20 80% 50%)",
+    gradient: "from-primary/30 via-accent/20 to-fuchsia-600/30",
   },
 ]
 
@@ -64,27 +64,30 @@ function ProjectCard({
       className="group relative cursor-pointer"
     >
       {/* Project Image Placeholder */}
-      <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-6 bg-secondary">
+      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-6 border border-white/[0.06]">
         <motion.div
-          className="absolute inset-0"
-          style={{ backgroundColor: project.color }}
-          animate={isHovered ? { scale: 1.03 } : { scale: 1 }}
+          className={`absolute inset-0 bg-gradient-to-br ${project.gradient}`}
+          animate={isHovered ? { scale: 1.05 } : { scale: 1 }}
           transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
         >
-          {/* Abstract geometric pattern */}
+          {/* Glassy geometric pattern */}
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
               className="relative w-32 h-32 lg:w-48 lg:h-48"
               animate={isHovered ? { rotate: 45 } : { rotate: 0 }}
               transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
             >
-              <div className="absolute inset-0 border-2 border-primary-foreground/20 rounded-lg" />
-              <div className="absolute inset-4 border border-primary-foreground/10 rounded-md" />
-              <div className="absolute inset-8 bg-primary-foreground/5 rounded-sm" />
+              <div className="absolute inset-0 border border-white/[0.15] rounded-2xl backdrop-blur-sm bg-white/[0.03]" />
+              <div className="absolute inset-6 border border-white/[0.08] rounded-xl" />
+              <div className="absolute inset-12 bg-white/[0.05] rounded-lg" />
             </motion.div>
           </div>
-          {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-transparent" />
+
+          {/* Grid overlay */}
+          <div className="absolute inset-0 cyber-grid opacity-50" />
+
+          {/* Bottom gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
         </motion.div>
 
         {/* Hover CTA */}
@@ -94,14 +97,14 @@ function ProjectCard({
           animate={isHovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-background text-foreground">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full border border-white/[0.1] bg-white/[0.06] backdrop-blur-xl text-foreground">
             <ArrowUpRight className="w-5 h-5" />
           </div>
         </motion.div>
 
         {/* Year badge */}
         <div className="absolute top-4 left-4">
-          <span className="text-xs font-mono text-primary-foreground/80 tracking-wider">
+          <span className="px-3 py-1 rounded-full text-xs font-mono text-foreground/70 tracking-wider border border-white/[0.08] bg-white/[0.04] backdrop-blur-sm">
             {project.year}
           </span>
         </div>
@@ -111,10 +114,10 @@ function ProjectCard({
       <div>
         <div className="flex items-start justify-between mb-2">
           <div>
-            <span className="text-xs font-medium text-accent tracking-wider uppercase">
+            <span className="text-xs font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent tracking-wider uppercase">
               {project.category}
             </span>
-            <h3 className="text-xl lg:text-2xl font-bold text-foreground tracking-tight mt-1 group-hover:text-accent transition-colors duration-300">
+            <h3 className="text-xl lg:text-2xl font-bold text-foreground tracking-tight mt-1 group-hover:text-primary transition-colors duration-300">
               {project.title}
             </h3>
           </div>
@@ -130,7 +133,7 @@ function ProjectCard({
             >
               {tag}
               {tag !== project.tags[project.tags.length - 1] && (
-                <span className="ml-2 text-border">{"/"}</span>
+                <span className="ml-2 text-white/[0.15]">{"/"}</span>
               )}
             </span>
           ))}
@@ -166,7 +169,7 @@ export function WorkShowcase() {
         >
           <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-foreground text-balance">
             Projects that speak{" "}
-            <span className="italic font-light text-accent">volumes</span>
+            <span className="italic font-light bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">volumes</span>
           </h2>
         </motion.div>
       </div>

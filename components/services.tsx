@@ -74,7 +74,7 @@ function ServiceCard({
       transition={{ delay: 0.2 + index * 0.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative border-b border-border py-10 lg:py-14 cursor-pointer"
+      className="group relative border-b border-white/[0.06] py-10 lg:py-14 cursor-pointer"
     >
       <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
         {/* Left: Number and Icon */}
@@ -85,8 +85,9 @@ function ServiceCard({
           <motion.div
             animate={isHovered ? { scale: 1.1, rotate: -5 } : { scale: 1, rotate: 0 }}
             transition={{ duration: 0.3 }}
+            className="p-2.5 rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm"
           >
-            <Icon className="w-6 h-6 text-accent" />
+            <Icon className="w-5 h-5 text-primary" />
           </motion.div>
         </div>
 
@@ -94,7 +95,7 @@ function ServiceCard({
         <div className="flex-1">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-2xl lg:text-4xl font-bold text-foreground tracking-tight group-hover:text-accent transition-colors duration-300">
+              <h3 className="text-2xl lg:text-4xl font-bold text-foreground tracking-tight group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                 {service.title}
               </h3>
               <p className="text-sm text-muted-foreground mt-1 tracking-wide">
@@ -106,7 +107,7 @@ function ServiceCard({
               transition={{ duration: 0.3 }}
               className="hidden lg:block"
             >
-              <ArrowUpRight className="w-6 h-6 text-muted-foreground group-hover:text-accent transition-colors" />
+              <ArrowUpRight className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
             </motion.div>
           </div>
 
@@ -131,7 +132,7 @@ function ServiceCard({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.05, duration: 0.3 }}
-                      className="px-3 py-1.5 text-xs font-medium rounded-full border border-border text-muted-foreground bg-secondary"
+                      className="px-3 py-1.5 text-xs font-medium rounded-full border border-white/[0.08] text-muted-foreground bg-white/[0.03] backdrop-blur-sm"
                     >
                       {cap}
                     </motion.span>
@@ -146,7 +147,7 @@ function ServiceCard({
             {service.capabilities.map((cap) => (
               <span
                 key={cap}
-                className="px-3 py-1.5 text-xs font-medium rounded-full border border-border text-muted-foreground bg-secondary"
+                className="px-3 py-1.5 text-xs font-medium rounded-full border border-white/[0.08] text-muted-foreground bg-white/[0.03]"
               >
                 {cap}
               </span>
@@ -155,9 +156,9 @@ function ServiceCard({
         </div>
       </div>
 
-      {/* Hover accent line */}
+      {/* Hover accent line - gradient */}
       <motion.div
-        className="absolute bottom-0 left-0 h-px bg-accent"
+        className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-primary to-accent"
         initial={{ width: "0%" }}
         animate={isHovered ? { width: "100%" } : { width: "0%" }}
         transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
@@ -192,13 +193,13 @@ export function Services() {
         >
           <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-foreground text-balance">
             Three pillars of{" "}
-            <span className="italic font-light text-accent">digital craft</span>
+            <span className="italic font-light bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">digital craft</span>
           </h2>
         </motion.div>
       </div>
 
       {/* Service Cards */}
-      <div className="border-t border-border">
+      <div className="border-t border-white/[0.06]">
         {services.map((service, i) => (
           <ServiceCard key={service.number} service={service} index={i} isInView={isInView} />
         ))}

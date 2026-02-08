@@ -7,7 +7,7 @@ import { Quote } from "lucide-react"
 const testimonials = [
   {
     quote:
-      "WEB Shoili transformed our digital presence entirely. The attention to detail in both design and code is something we have never experienced with any other agency.",
+      "WEB ShoiLi transformed our digital presence entirely. The attention to detail in both design and code is something we have never experienced with any other agency.",
     author: "Sarah Chen",
     role: "CEO, Meridian Finance",
   },
@@ -45,7 +45,7 @@ export function Testimonials() {
         >
           <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-foreground text-balance">
             Trusted by{" "}
-            <span className="italic font-light text-accent">visionaries</span>
+            <span className="italic font-light bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">visionaries</span>
           </h2>
         </motion.div>
       </div>
@@ -58,16 +58,16 @@ export function Testimonials() {
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.3 + i * 0.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-            className="relative p-8 lg:p-12 border border-border rounded-lg bg-secondary/50 group hover:border-accent/30 transition-colors duration-500"
+            className="relative p-8 lg:p-12 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-md group hover:border-primary/20 hover:bg-white/[0.05] transition-all duration-500"
           >
-            <Quote className="w-8 h-8 text-accent/30 mb-6" />
+            <Quote className="w-8 h-8 text-primary/30 mb-6" />
 
             <blockquote className="text-lg lg:text-xl text-foreground leading-relaxed mb-8 font-light">
               {`"${testimonial.quote}"`}
             </blockquote>
 
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground text-sm font-bold">
                 {testimonial.author.split(" ").map(n => n[0]).join("")}
               </div>
               <div>

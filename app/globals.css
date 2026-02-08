@@ -4,39 +4,39 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 210 40% 98%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 220 60% 20%;
+    --background: 260 50% 4%;
+    --foreground: 0 0% 95%;
+    --card: 260 40% 8%;
+    --card-foreground: 0 0% 95%;
+    --popover: 260 40% 8%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 270 100% 65%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 98%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 20 80% 50%;
+    --secondary: 260 30% 12%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 260 25% 12%;
+    --muted-foreground: 260 10% 55%;
+    --accent: 320 100% 60%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 220 60% 20%;
-    --radius: 0.5rem;
-    --chart-1: 220 60% 20%;
-    --chart-2: 20 80% 50%;
-    --chart-3: 215 16% 47%;
-    --chart-4: 210 40% 96%;
-    --chart-5: 222 47% 11%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 260 20% 18%;
+    --input: 260 20% 18%;
+    --ring: 270 100% 65%;
+    --radius: 0.75rem;
+    --chart-1: 270 100% 65%;
+    --chart-2: 320 100% 60%;
+    --chart-3: 220 90% 55%;
+    --chart-4: 260 25% 12%;
+    --chart-5: 0 0% 95%;
+    --sidebar-background: 260 40% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 270 100% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 25% 12%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 260 20% 18%;
+    --sidebar-ring: 270 100% 65%;
   }
 }
 
@@ -55,14 +55,12 @@
   }
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom selection color */
 ::selection {
-  background-color: hsl(220 60% 20%);
+  background-color: hsl(270 100% 65% / 0.4);
   color: hsl(0 0% 100%);
 }
 
@@ -80,7 +78,155 @@ html {
   animation: marquee 30s linear infinite;
 }
 
-/* Smooth cursor for magnetic buttons */
+/* Nebula gradient blobs */
+@keyframes nebula-drift-1 {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+  25% {
+    transform: translate(10%, -15%) scale(1.1);
+  }
+  50% {
+    transform: translate(-5%, 10%) scale(0.95);
+  }
+  75% {
+    transform: translate(-15%, -5%) scale(1.05);
+  }
+}
+
+@keyframes nebula-drift-2 {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+  25% {
+    transform: translate(-12%, 8%) scale(1.05);
+  }
+  50% {
+    transform: translate(8%, -12%) scale(1.1);
+  }
+  75% {
+    transform: translate(5%, 15%) scale(0.9);
+  }
+}
+
+@keyframes nebula-drift-3 {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1.05);
+  }
+  33% {
+    transform: translate(15%, 10%) scale(0.95);
+  }
+  66% {
+    transform: translate(-10%, -8%) scale(1.1);
+  }
+}
+
+@keyframes nebula-drift-4 {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+  20% {
+    transform: translate(-8%, -10%) scale(1.15);
+  }
+  40% {
+    transform: translate(12%, 5%) scale(0.9);
+  }
+  60% {
+    transform: translate(-5%, 12%) scale(1.05);
+  }
+  80% {
+    transform: translate(10%, -8%) scale(1);
+  }
+}
+
+.nebula-blob-1 {
+  animation: nebula-drift-1 20s ease-in-out infinite;
+}
+
+.nebula-blob-2 {
+  animation: nebula-drift-2 25s ease-in-out infinite;
+}
+
+.nebula-blob-3 {
+  animation: nebula-drift-3 18s ease-in-out infinite;
+}
+
+.nebula-blob-4 {
+  animation: nebula-drift-4 22s ease-in-out infinite;
+}
+
+/* Glow text effect */
+@keyframes text-glow-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 20px hsl(270 100% 65% / 0.3),
+      0 0 60px hsl(270 100% 65% / 0.15),
+      0 0 100px hsl(320 100% 60% / 0.1);
+  }
+  50% {
+    text-shadow:
+      0 0 30px hsl(270 100% 65% / 0.5),
+      0 0 80px hsl(270 100% 65% / 0.25),
+      0 0 120px hsl(320 100% 60% / 0.15);
+  }
+}
+
+.glow-text {
+  animation: text-glow-pulse 4s ease-in-out infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(260 50% 4%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(260 20% 25%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(270 100% 65% / 0.5);
+}
+
+/* Hide scrollbar for nav scroll */
+.nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Floating code snippet styling */
+@keyframes float-code {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+}
+
+.float-code {
+  animation: float-code 6s ease-in-out infinite;
+}
+
+/* Grid overlay */
+.cyber-grid {
+  background-image:
+    linear-gradient(hsl(270 100% 65% / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(270 100% 65% / 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Magnetic button */
 .magnetic-btn {
   transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
