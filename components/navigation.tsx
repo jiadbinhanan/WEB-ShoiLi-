@@ -1,8 +1,10 @@
+
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sparkles, ChevronRight } from "lucide-react"
+import Image from "next/image"
 
 const navLinks = [
   { label: "Home", href: "#" },
@@ -24,7 +26,6 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Track active section based on scroll position
   useEffect(() => {
     const sections = ["#", "#engineering", "#creative", "#pricing"]
     const sectionIds = ["", "engineering", "creative", "pricing"]
@@ -52,7 +53,6 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleSectionScroll)
   }, [])
 
-  // Hide scroll hint when user scrolls the nav
   const handleNavScroll = useCallback(() => {
     if (scrollRef.current && scrollRef.current.scrollLeft > 10) {
       setShowScrollHint(false)
@@ -77,22 +77,17 @@ export function Navigation() {
             ? "glass-card-heavy shadow-[0_8px_40px_hsl(265_100%_65%/0.1)]"
             : "glass-card"
           }
+          backdrop-blur-lg
         `}
       >
-        {/* Inner gradient glow border */}
         <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/[0.08] via-transparent to-accent/[0.08]" />
         </div>
 
-        {/* Brand - High contrast white with neon glow */}
         <a href="#" className="relative z-10 flex-shrink-0 mr-2 md:mr-6">
-          <span className="text-base md:text-lg font-extrabold tracking-tight text-primary-foreground brand-glow">
-            WEB{" "}
-            <span className="text-primary-foreground">ShoiLi</span>
-          </span>
+          <Image src="/Logo1.png" alt="Web Shoili Logo" width={100} height={40} />
         </a>
 
-        {/* Desktop Links - Centered */}
         <div className="hidden md:flex flex-1 items-center justify-center gap-1">
           {navLinks.map((link) => {
             const isActive = activeLink === link.label
@@ -118,7 +113,6 @@ export function Navigation() {
                     style={{ zIndex: -1 }}
                   />
                 )}
-                {/* Active glowing dot */}
                 {isActive && (
                   <motion.span
                     layoutId="nav-active-dot"
@@ -134,8 +128,7 @@ export function Navigation() {
           })}
         </div>
 
-        {/* Mobile Links - Horizontally Scrollable */}
-        <div className="md:hidden flex-1 relative">
+        <div className="md:hidden flex-1 relative overflow-hidden">
           <div
             ref={scrollRef}
             onScroll={handleNavScroll}
@@ -172,7 +165,6 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Mobile Scroll Hint - pulsing arrow */}
           <AnimatePresence>
             {showScrollHint && (
               <motion.div
@@ -189,7 +181,6 @@ export function Navigation() {
           </AnimatePresence>
         </div>
 
-        {/* CTA Button */}
         <a
           href="#contact"
           className="relative z-10 flex-shrink-0 ml-2 md:ml-6 group"
@@ -216,3 +207,4 @@ export function Navigation() {
     </motion.header>
   )
 }
+

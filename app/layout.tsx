@@ -1,12 +1,18 @@
 import React from "react"
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Lobster } from 'next/font/google'
 
 import './globals.css'
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+})
+
+const lobster = Lobster({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-lobster',
 })
 
 export const metadata: Metadata = {
@@ -28,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${lobster.variable}`}>
       <body className="font-sans antialiased overflow-x-hidden">{children}</body>
     </html>
   )

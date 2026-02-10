@@ -1,15 +1,11 @@
-"use client"
-
 import React from "react"
 
-import { useRef, useCallback, useEffect, useState } from "react"
+import { useRef, useCallback } from "react"
 import {
   motion,
   useInView,
-  useScroll,
-  useTransform,
-  useMotionValue,
   useSpring,
+  useMotionValue,
 } from "framer-motion"
 import {
   ArrowRight,
@@ -25,8 +21,8 @@ import {
   Braces,
   FileCode2,
 } from "lucide-react"
+import Image from "next/image"
 
-/* ─── Syntax-highlighted floating code snippets ─── */
 const codeSnippets = [
   {
     lines: [
@@ -70,7 +66,6 @@ const codeSnippets = [
   },
 ]
 
-/* ─── Floating micro-icons ─── */
 const floatingIcons = [
   { Icon: Code2, top: "18%", left: "14%", delay: 1.8, size: 18 },
   { Icon: Layers, top: "14%", right: "16%", delay: 2.1, size: 16 },
@@ -85,14 +80,12 @@ const floatingIcons = [
   { Icon: FileCode2, top: "48%", left: "3%", delay: 4.2, size: 16 },
 ]
 
-/* ─── Stat items for parallax glass cards ─── */
 const statItems = [
   { value: "150+", label: "Projects Delivered" },
   { value: "99%", label: "Client Satisfaction" },
   { value: "5+", label: "Years of Craft" },
 ]
 
-/* ─── Magnetic Button Hook ─── */
 function useMagneticEffect() {
   const ref = useRef<HTMLAnchorElement>(null)
   const x = useMotionValue(0)
@@ -122,68 +115,57 @@ function useMagneticEffect() {
   return { ref, springX, springY, handleMouseMove, handleMouseLeave }
 }
 
+const smokeIn = {
+  hidden: { opacity: 0, filter: "blur(10px)", transform: "translateY(30px) scale(0.95)" },
+  visible: (i: number) => ({
+    opacity: 1,
+    filter: "blur(0px)",
+    transform: "translateY(0px) scale(1)",
+    transition: {
+      delay: 1.3 + i * 0.2,
+      duration: 0.8,
+      ease: [0.33, 1, 0.68, 1],
+    },
+  }),
+}
+
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true })
+  const isInView = useInView(containerRef, { once: true, amount: 0.3 })
 
-  // Scroll-based outline-to-solid effect
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  })
-  const fillProgress = useTransform(scrollYProgress, [0, 0.3], [0, 1])
-  const fillOpacity = useTransform(fillProgress, [0, 1], [0, 1])
-  const outlineOpacity = useTransform(fillProgress, [0, 1], [1, 0])
-
-  // Parallax offsets for stat cards
-  const statY1 = useTransform(scrollYProgress, [0, 1], [0, -40])
-  const statY2 = useTransform(scrollYProgress, [0, 1], [0, -70])
-  const statY3 = useTransform(scrollYProgress, [0, 1], [0, -50])
-  const statYs = [statY1, statY2, statY3]
-
-  // Magnetic button
-  const magnetic = useMagneticEffect()
+  const magneticStart = useMagneticEffect()
+  const magneticExplore = useMagneticEffect()
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[110vh] flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-24 md:pt-32"
     >
-      {/* ===== DEEP SPACE NEBULA BACKGROUND ===== */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-background" />
-
-        {/* Indigo blob */}
         <div
           className="nebula-blob-1 absolute -top-[30%] -left-[20%] w-[90vw] h-[90vw] rounded-full opacity-30"
           style={{ background: "radial-gradient(circle, hsl(245 80% 40% / 0.5) 0%, transparent 65%)" }}
         />
-        {/* Purple blob */}
         <div
           className="nebula-blob-2 absolute -top-[25%] -right-[15%] w-[80vw] h-[80vw] rounded-full opacity-30"
           style={{ background: "radial-gradient(circle, hsl(265 100% 50% / 0.4) 0%, transparent 60%)" }}
         />
-        {/* Terracotta warm blob */}
         <div
           className="nebula-blob-3 absolute -bottom-[20%] left-[10%] w-[70vw] h-[70vw] rounded-full opacity-20"
           style={{ background: "radial-gradient(circle, hsl(20 80% 50% / 0.35) 0%, transparent 65%)" }}
         />
-        {/* Deep magenta blob */}
         <div
           className="nebula-blob-4 absolute top-[20%] right-[25%] w-[55vw] h-[55vw] rounded-full opacity-20"
           style={{ background: "radial-gradient(circle, hsl(300 70% 45% / 0.3) 0%, transparent 55%)" }}
         />
-        {/* Deep blue center blob */}
         <div
           className="nebula-blob-5 absolute top-[40%] left-[30%] w-[50vw] h-[50vw] rounded-full opacity-15"
           style={{ background: "radial-gradient(circle, hsl(220 90% 50% / 0.35) 0%, transparent 60%)" }}
         />
-
-        {/* Cyber grid */}
         <div className="absolute inset-0 cyber-grid" />
       </div>
 
-      {/* ===== FLOATING CODE SNIPPETS (syntax-highlighted) ===== */}
       {codeSnippets.map((snippet, i) => (
         <motion.div
           key={`code-${i}`}
@@ -201,13 +183,11 @@ export function Hero() {
           }}
         >
           <div className="glass-card-heavy rounded-xl p-3 xl:p-4 shadow-[0_4px_40px_hsl(265_100%_65%/0.08)]">
-            {/* Terminal dots */}
             <div className="flex items-center gap-1.5 mb-2.5">
               <div className="w-2 h-2 rounded-full bg-red-400/50" />
               <div className="w-2 h-2 rounded-full bg-yellow-400/40" />
               <div className="w-2 h-2 rounded-full bg-green-400/40" />
             </div>
-            {/* Syntax-highlighted lines */}
             <div className="font-mono text-[10px] xl:text-xs leading-relaxed">
               {snippet.lines.map((line, li) => (
                 <div key={li}>
@@ -221,7 +201,6 @@ export function Hero() {
         </motion.div>
       ))}
 
-      {/* ===== FLOATING MICRO-ICONS ===== */}
       {floatingIcons.map(({ Icon, top, left, right, bottom, delay, size }, i) => (
         <motion.div
           key={`icon-${i}`}
@@ -241,9 +220,7 @@ export function Hero() {
         </motion.div>
       ))}
 
-      {/* ===== CENTER CONTENT ===== */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-7xl mx-auto">
-        {/* Tagline Pill */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.9 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
@@ -259,49 +236,13 @@ export function Hero() {
           </span>
         </motion.div>
 
-        {/* ===== MAIN TITLE: Outline-to-Solid on Scroll ===== */}
-        <h1 className="relative mb-6 md:mb-8">
-          {/* Glow aura behind text */}
+        <div className="relative mb-6 md:mb-8">
           <div className="absolute inset-0 blur-[80px] opacity-25 bg-gradient-to-r from-primary via-accent to-primary pointer-events-none scale-150" />
-
-          <div className="relative">
-            {/* WEB - Outline layer (fades out on scroll) */}
-            <div className="relative overflow-hidden">
-              <motion.div
-                style={{ opacity: outlineOpacity }}
-                className="text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] text-outline"
-              >
-                {"WEB"}
-              </motion.div>
-              {/* WEB - Solid fill layer (fades in on scroll) */}
-              <motion.div
-                style={{ opacity: fillOpacity }}
-                className="absolute inset-0 text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] text-foreground"
-              >
-                {"WEB"}
-              </motion.div>
-            </div>
-
-            {/* ShoiLi - Outline layer (fades out on scroll) */}
-            <div className="relative overflow-hidden -mt-2 md:-mt-4">
-              <motion.div
-                style={{ opacity: outlineOpacity }}
-                className="text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] text-outline"
-              >
-                {"ShoiLi"}
-              </motion.div>
-              {/* ShoiLi - Gradient solid fill layer */}
-              <motion.div
-                style={{ opacity: fillOpacity }}
-                className="absolute inset-0 text-[clamp(4rem,14vw,12rem)] font-black leading-[0.85] tracking-[-0.04em] glow-text bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
-              >
-                {"ShoiLi"}
-              </motion.div>
-            </div>
+          <div className="relative brand-glow">
+            <Image src="/Logo1.png" alt="Web Shoili Logo" width={500} height={150} priority />
           </div>
-        </h1>
+        </div>
 
-        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -314,7 +255,6 @@ export function Hero() {
           <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-semibold">digital masterpieces</span>.
         </motion.p>
 
-        {/* CTA Buttons with Magnetic Pull */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -322,11 +262,11 @@ export function Hero() {
           className="flex flex-col sm:flex-row items-center gap-4 mb-16 md:mb-20"
         >
           <motion.a
-            ref={magnetic.ref}
+            ref={magneticStart.ref}
             href="#contact"
-            style={{ x: magnetic.springX, y: magnetic.springY }}
-            onMouseMove={magnetic.handleMouseMove}
-            onMouseLeave={magnetic.handleMouseLeave}
+            style={{ x: magneticStart.springX, y: magneticStart.springY }}
+            onMouseMove={magneticStart.handleMouseMove}
+            onMouseLeave={magneticStart.handleMouseLeave}
             className="
               magnetic-btn group relative flex items-center gap-2.5 px-9 py-4
               rounded-full text-sm font-bold
@@ -340,32 +280,37 @@ export function Hero() {
             Start Your Project
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
           </motion.a>
-          <a
+          <motion.a
+            ref={magneticExplore.ref}
             href="#work"
+            style={{ x: magneticExplore.springX, y: magneticExplore.springY }}
+            onMouseMove={magneticExplore.handleMouseMove}
+            onMouseLeave={magneticExplore.handleMouseLeave}
             className="
-              glass-card-heavy flex items-center gap-2.5 px-8 py-3.5
+              magnetic-btn group relative flex items-center gap-2.5 px-8 py-3.5
               rounded-full text-sm font-medium
-              text-foreground
-              hover:bg-white/[0.08]
-              transition-all duration-300
+              bg-gradient-to-r from-blue-500 via-blue-500 to-green-400
+              text-primary-foreground
+              shadow-[0_0_30px_hsl(210_100%_50%/0.35),0_0_60px_hsl(140_80%_55%/0.12)]
+              hover:shadow-[0_0_50px_hsl(210_100%_50%/0.55),0_0_90px_hsl(140_80%_55%/0.2)]
+              transition-shadow duration-500
             "
           >
             Explore Our Work
-          </a>
+          </motion.a>
         </motion.div>
 
-        {/* ===== STATS IN FLOATING GLASS CARDS WITH PARALLAX ===== */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-6">
+        <div className="flex flex-row items-center justify-center gap-4 md:gap-8 w-full max-w-md lg:max-w-lg">
           {statItems.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ delay: 1.6 + i * 0.15, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-              style={{ y: statYs[i] }}
-              className="glass-card-heavy rounded-2xl px-8 py-6 text-center min-w-[140px] group hover:border-primary/20 transition-all duration-500"
+              custom={i}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={smokeIn}
+              className="glass-card-heavy rounded-2xl p-4 text-center w-32 md:w-36 lg:w-40"
             >
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent tracking-tight mb-1">
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent tracking-tighter mb-1">
                 {stat.value}
               </div>
               <div className="text-[10px] md:text-xs text-muted-foreground tracking-wider uppercase">
@@ -374,12 +319,11 @@ export function Hero() {
             </motion.div>
           ))}
         </div>
+
       </div>
 
-      {/* Bottom gradient fade */}
       <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
 
-      {/* Scroll cue */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}

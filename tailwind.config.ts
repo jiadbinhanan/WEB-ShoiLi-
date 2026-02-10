@@ -12,6 +12,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        lobster: ['var(--font-lobster)', 'cursive'],
       },
       colors: {
         background: 'hsl(var(--background))',
